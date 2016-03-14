@@ -1,0 +1,3 @@
+Folder C Created? false
+Invalid Folder(s)! Image not Captured
+Folder A Created? true
