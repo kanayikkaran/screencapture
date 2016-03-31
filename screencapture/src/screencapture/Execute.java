@@ -13,9 +13,12 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -68,6 +71,26 @@ public class Execute {
 
 	}
 	
+	public static void writeToFile(String input) throws Exception
+	{
+		
+		File file = new File(System.getProperty("user.dir")+"/file");
+	    FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir")+"/file");
+	    ObjectOutputStream oos = new ObjectOutputStream(fos);
+	    oos.writeObject(input);
+	    oos.close();
+		
+	}
+	
+	public static String readFromFile() throws Exception
+	{
+		String output;
+		FileInputStream fis = new FileInputStream(System.getProperty("user.dir")+"/file");
+		ObjectInputStream ois = new ObjectInputStream(fis);
+		output = ois.readObject().toString();
+		ois.close();
+		return output;
+	}
 	
 	public static void main(String args[]) throws Exception
 	{
