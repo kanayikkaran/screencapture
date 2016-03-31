@@ -1,6 +1,7 @@
 package screencapture;
 
 import java.awt.AWTException;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -138,7 +139,11 @@ public class Execute {
 					text.setText("Scenario");
 				
 				if(folderstatus)
+				{
+				frame.setVisible(false);
 				capture(text.getText(), folder.getText());
+				frame.setVisible(true);
+				}
 				else if(!folderstatus)
 				System.out.println("Invalid Folder(s)! Image not Captured");
 				
