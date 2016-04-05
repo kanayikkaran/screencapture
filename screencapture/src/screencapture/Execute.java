@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -110,6 +112,7 @@ public class Execute {
 		
 		frame.setLayout(new FlowLayout(FlowLayout.CENTER));
 		frame.pack();
+		frame.setIconImage(ImageIO.read(new File("icon.png")));
 		
 		frame.setVisible(true);
 		
