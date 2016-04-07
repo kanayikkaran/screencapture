@@ -112,8 +112,16 @@ public class Execute {
 		
 		frame.setLayout(new FlowLayout(FlowLayout.CENTER));
 		frame.pack();
-		frame.setIconImage(ImageIO.read(new File("icon.png")));
-		
+		System.out.println(System.getProperty("user.dir"));
+		try
+		{
+			frame.setIconImage(ImageIO.read(new File("/icon.png")));
+			//getClass().getClassLoader().getResourceAsStream("\\icon.png");
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error in reading image:"+e.getMessage());
+		}
 		frame.setVisible(true);
 		
 			frame.addWindowFocusListener(new WindowFocusListener() {
@@ -138,6 +146,9 @@ public class Execute {
 			{
 				boolean folderstatus = false;
 				
+				if(text.getText().isEmpty())
+					text.setText("Scenario");
+				
 				if(folder.getText().isEmpty())
 				{
 					folder.setText("D:\\");
@@ -155,23 +166,26 @@ public class Execute {
 						}
 						catch(Exception e)
 						{
-						System.out.println("Exception in mkdir");	
+						System.out.println("Exception in mkdir");
 						}
 						
 						System.out.println("Folder "+fold.getName()+" Created? "+folderstatus);
+						
 					}
 				}
-				
-				if(text.getText().isEmpty())
-					text.setText("Scenario");
-				
+								
 				if(folderstatus)
 				{
 				frame.setState(Frame.ICONIFIED);
 				capture(text.getText(), folder.getText());
 				}
 				else if(!folderstatus)
-				System.out.println("Invalid Folder(s)! Image not Captured");
+				{
+				folder.setText("D:\\");
+				System.out.println("Invalid Folder(s)! Saved to D drive");
+				frame.setState(Frame.ICONIFIED);
+				capture(text.getText(), folder.getText());
+				}
 				
 				
 			}
