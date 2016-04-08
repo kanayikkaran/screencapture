@@ -50,7 +50,7 @@ public class Execute {
 		
 		Date date = new Date();
 		String format = "jpg";
-		SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMddHHmmss");
+		SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd_HHmmss");
 		Rectangle rect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
 		BufferedImage img = r.createScreenCapture(rect);
 		
