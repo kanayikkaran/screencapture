@@ -1,3 +1,2 @@
-Folder C Created? false
-Invalid Folder(s)! Image not Captured
-Folder A Created? true
+C:\Users\sachin\git\local_screencapture\screencapture
+Error in reading image:Can't read input file!

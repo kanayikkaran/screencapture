@@ -30,6 +30,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
+import org.jdesktop.swingx.prompt.PromptSupport;
+
 public class Execute {
 
 	static String scenario;
@@ -105,6 +107,13 @@ public class Execute {
 		final JTextField folder = new JTextField("D:\\");
 		final JTextField text = new JTextField("ScenarioName");
 		JButton button = new JButton("Capture");
+		
+		folder.setToolTipText("Enter the folder");
+		text.setToolTipText("Enter file name");
+		button.setToolTipText("Take Screenshot");
+		
+		PromptSupport.setPrompt("Folder Path", folder);
+		PromptSupport.setPrompt("Scenario Name", text);
 		
 		frame.add(folder);
 		frame.add(text);
