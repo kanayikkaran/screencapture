@@ -108,7 +108,7 @@ public class Execute {
 		final JTextField text = new JTextField("ScenarioName");
 		JButton button = new JButton("Capture");
 		
-		folder.setToolTipText("Enter the folder");
+		folder.setToolTipText("Enter folder path");
 		text.setToolTipText("Enter file name");
 		button.setToolTipText("Take Screenshot");
 		
