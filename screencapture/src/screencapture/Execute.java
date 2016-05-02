@@ -160,7 +160,8 @@ public class Execute {
 				
 				if(folder.getText().isEmpty())
 				{
-					folder.setText("D:\\");
+					//folder.setText("D:\\"); 
+					folder.setText(System.getProperty("user.dir"));
 					folderstatus = true;
 				}
 				else
@@ -190,8 +191,9 @@ public class Execute {
 				}
 				else if(!folderstatus)
 				{
-				folder.setText("D:\\");
-				System.out.println("Invalid Folder(s)! Saved to D drive");
+				//folder.setText("D:\\");
+				folder.setText(System.getProperty("user.dir"));
+				System.out.println("Invalid Folder(s)! Saved to current folder");
 				frame.setState(Frame.ICONIFIED);
 				capture(text.getText(), folder.getText());
 				}
