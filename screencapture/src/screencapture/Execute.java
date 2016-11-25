@@ -48,7 +48,6 @@ public class Execute {
 		catch(AWTException e)
 		{
 		System.out.println("Unable to create Robot");
-		System.out.println("Accidental Code");
 		}
 		
 		Date date = new Date();
