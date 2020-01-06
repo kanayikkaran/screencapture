@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -30,11 +31,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-import org.jdesktop.swingx.prompt.PromptSupport;
-
 public class Execute {
 
-	static String scenario;
+	static String defaultScenario = "ScenarioName";
+	static String defaultFolder = System.getProperty("user.dir");
 	
 	public static void capture(String testScenario, String filePath){
 		
@@ -51,10 +51,13 @@ public class Execute {
 		}
 		
 		Date date = new Date();
-		String format = "jpg";
+		String format = "png";
 		SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd_HHmmss");
-		Rectangle rect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-		BufferedImage img = r.createScreenCapture(rect);
+		/*To get full screen including the task bar*/
+		/*Rectangle rect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+		BufferedImage img = r.createScreenCapture(rect);*/
+		Rectangle windowRect = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		BufferedImage img = r.createScreenCapture(windowRect);
 		
 		try
 		{
@@ -77,13 +80,11 @@ public class Execute {
 	
 	public static void writeToFile(String input) throws Exception
 	{
-		
 		File file = new File(System.getProperty("user.dir")+"/file");
 	    FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir")+"/file");
 	    ObjectOutputStream oos = new ObjectOutputStream(fos);
 	    oos.writeObject(input);
 	    oos.close();
-		
 	}
 	
 	public static String readFromFile() throws Exception
@@ -104,16 +105,16 @@ public class Execute {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		
-		final JTextField folder = new JTextField("D:\\");
-		final JTextField text = new JTextField("ScenarioName");
+		final JTextField folder = new JTextField(defaultFolder);
+		final JTextField text = new JTextField(defaultScenario);
 		JButton button = new JButton("Capture");
 		
 		folder.setToolTipText("Enter folder path");
-		text.setToolTipText("Enter file name");
-		button.setToolTipText("Take Screenshot");
+		text.setToolTipText("Enter scenario name");
+		button.setToolTipText("Take screenshot");
 		
-		PromptSupport.setPrompt("Folder Path", folder);
-		PromptSupport.setPrompt("Scenario Name", text);
+		/*PromptSupport.setPrompt("Folder Path", folder);
+		PromptSupport.setPrompt("Scenario Name", text);*/
 		
 		frame.add(folder);
 		frame.add(text);
@@ -121,10 +122,9 @@ public class Execute {
 		
 		frame.setLayout(new FlowLayout(FlowLayout.CENTER));
 		frame.pack();
-		System.out.println(System.getProperty("user.dir"));
 		try
 		{
-			frame.setIconImage(ImageIO.read(new File("/icon.png")));
+			frame.setIconImage(ImageIO.read(new File("/lib/record-icon.png")));
 			//getClass().getClassLoader().getResourceAsStream("\\icon.png");
 		}
 		catch(Exception e)
@@ -142,9 +142,11 @@ public class Execute {
 			
 			@Override
 			public void windowGainedFocus(WindowEvent arg0) {
-				
+				if(folder.getText().isEmpty())
+					folder.setText(defaultFolder);
+				if(text.getText().isEmpty())
+					text.setText(defaultScenario);
 				frame.pack();
-		
 			}
 		});
 		
@@ -156,12 +158,11 @@ public class Execute {
 				boolean folderstatus = false;
 				
 				if(text.getText().isEmpty())
-					text.setText("Scenario");
+					text.setText(defaultScenario);
 				
 				if(folder.getText().isEmpty())
 				{
-					//folder.setText("D:\\"); 
-					folder.setText(System.getProperty("user.dir"));
+					folder.setText(defaultFolder);
 					folderstatus = true;
 				}
 				else
@@ -178,9 +179,10 @@ public class Execute {
 						{
 						System.out.println("Exception in mkdir");
 						}
-						
-						System.out.println("Folder "+fold.getName()+" Created? "+folderstatus);
-						
+						if(folderstatus)
+							System.out.println("Folder "+fold.getName()+" is created");
+						else
+							System.out.println("Folder "+folder.getText()+" is NOT created");
 					}
 				}
 								
@@ -191,19 +193,12 @@ public class Execute {
 				}
 				else if(!folderstatus)
 				{
-				//folder.setText("D:\\");
-				folder.setText(System.getProperty("user.dir"));
-				System.out.println("Invalid Folder(s)! Saved to current folder");
+				folder.setText(defaultFolder);
+				System.out.println("Invalid Folder(s)! Saved to "+folder.getText());
 				frame.setState(Frame.ICONIFIED);
 				capture(text.getText(), folder.getText());
 				}
-				
-				
 			}
-				
 		});
-		
 	}
-	
-
 }
