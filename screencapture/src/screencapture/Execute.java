@@ -35,6 +35,7 @@ public class Execute {
 
 	static String defaultScenario = "ScenarioName";
 	static String defaultFolder = System.getProperty("user.dir");
+	static int count = 0;
 	
 	public static void capture(String testScenario, String filePath){
 		
@@ -62,6 +63,7 @@ public class Execute {
 		try
 		{
 		ImageIO.write(img, format, new File(path+"//"+scenario+"_"+ft.format(date)+"."+format));
+		count++;
 		}
 		catch(FileNotFoundException e)
 		{
@@ -124,12 +126,15 @@ public class Execute {
 		frame.pack();
 		try
 		{
-			frame.setIconImage(ImageIO.read(new File("/lib/record-icon.png")));
+			ImageIcon icon = new ImageIcon("\\lib\\record-icon.png");
+			System.out.println("Icon Load Status : "+icon.getImageLoadStatus());
+			frame.setIconImage(icon.getImage());
+			//frame.setIconImage(ImageIO.read(new File("/lib/record-icon.png")));
 			//getClass().getClassLoader().getResourceAsStream("\\icon.png");
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error in reading image:"+e.getMessage());
+			System.out.println("Error in reading icon image:"+e.getMessage());
 		}
 		frame.setVisible(true);
 		
