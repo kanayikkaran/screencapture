@@ -28,6 +28,7 @@ import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
@@ -80,6 +81,25 @@ public class Execute {
 
 	}
 	
+	public static String selectFolder(String currentPath)
+	{
+		String folderSelected = null;
+		
+		try
+		{
+		final JFileChooser folderSelector = new JFileChooser(currentPath);
+		folderSelector.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if(folderSelector.showOpenDialog(folderSelector) == JFileChooser.APPROVE_OPTION)
+			folderSelected = folderSelector.getSelectedFile().getAbsolutePath();
+		}
+		
+		catch(Exception e)
+		{
+			System.out.println("Error while selecting folder "+e.getMessage());
+		}
+		return folderSelected;
+	}
+	
 	public static void writeToFile(String input) throws Exception
 	{
 		File file = new File(System.getProperty("user.dir")+"/file");
@@ -107,20 +127,24 @@ public class Execute {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		
-		final JTextField folder = new JTextField(defaultFolder);
-		final JTextField text = new JTextField(defaultScenario);
-		JButton button = new JButton("Capture");
+		final JTextField folderPath = new JTextField(defaultFolder);
+		final JTextField scenarioName = new JTextField(defaultScenario);
 		
-		folder.setToolTipText("Enter folder path");
-		text.setToolTipText("Enter scenario name");
-		button.setToolTipText("Take screenshot");
+		JButton folderButton = new JButton("Select");
+		JButton captureButton = new JButton("Capture");
+		
+		folderPath.setToolTipText("Enter folder path");
+		folderButton.setToolTipText("Select the folder");
+		scenarioName.setToolTipText("Enter scenario name");
+		captureButton.setToolTipText("Take screenshot");
 		
 		/*PromptSupport.setPrompt("Folder Path", folder);
 		PromptSupport.setPrompt("Scenario Name", text);*/
 		
-		frame.add(folder);
-		frame.add(text);
-		frame.add(button);
+		frame.add(folderPath);
+		frame.add(folderButton);
+		frame.add(scenarioName);
+		frame.add(captureButton);
 		
 		frame.setLayout(new FlowLayout(FlowLayout.CENTER));
 		frame.pack();
@@ -138,6 +162,17 @@ public class Execute {
 		}
 		frame.setVisible(true);
 		
+		folderButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String folderReturned = selectFolder(folderPath.getText());
+				if(folderReturned!=null)
+					folderPath.setText(folderReturned);
+			}
+		});
+			
 			frame.addWindowFocusListener(new WindowFocusListener() {
 			
 			@Override
@@ -147,32 +182,31 @@ public class Execute {
 			
 			@Override
 			public void windowGainedFocus(WindowEvent arg0) {
-				if(folder.getText().isEmpty())
-					folder.setText(defaultFolder);
-				if(text.getText().isEmpty())
-					text.setText(defaultScenario);
+				if(folderPath.getText().isEmpty())
+					folderPath.setText(defaultFolder);
+				if(scenarioName.getText().isEmpty())
+					scenarioName.setText(defaultScenario);
 				frame.pack();
 			}
 		});
 		
-		button.addActionListener(new ActionListener()
+		captureButton.addActionListener(new ActionListener()
 		{
-		
 			public void actionPerformed(ActionEvent a)
 			{
 				boolean folderstatus = false;
 				
-				if(text.getText().isEmpty())
-					text.setText(defaultScenario);
+				if(scenarioName.getText().isEmpty())
+					scenarioName.setText(defaultScenario);
 				
-				if(folder.getText().isEmpty())
+				if(folderPath.getText().isEmpty())
 				{
-					folder.setText(defaultFolder);
+					folderPath.setText(defaultFolder);
 					folderstatus = true;
 				}
 				else
 				{
-					File fold = new File(folder.getText());
+					File fold = new File(folderPath.getText());
 					folderstatus = fold.exists();
 					if(!folderstatus)
 					{
@@ -187,21 +221,21 @@ public class Execute {
 						if(folderstatus)
 							System.out.println("Folder "+fold.getName()+" is created");
 						else
-							System.out.println("Folder "+folder.getText()+" is NOT created");
+							System.out.println("Folder "+folderPath.getText()+" is NOT created");
 					}
 				}
 								
 				if(folderstatus)
 				{
 				frame.setState(Frame.ICONIFIED);
-				capture(text.getText(), folder.getText());
+				capture(scenarioName.getText(), folderPath.getText());
 				}
 				else if(!folderstatus)
 				{
-				folder.setText(defaultFolder);
-				System.out.println("Invalid Folder(s)! Saved to "+folder.getText());
+				folderPath.setText(defaultFolder);
+				System.out.println("Invalid Folder(s)! Saved to "+folderPath.getText());
 				frame.setState(Frame.ICONIFIED);
-				capture(text.getText(), folder.getText());
+				capture(scenarioName.getText(), folderPath.getText());
 				}
 			}
 		});
