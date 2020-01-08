@@ -11,6 +11,7 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -138,6 +140,9 @@ public class Execute {
 		scenarioName.setToolTipText("Enter scenario name");
 		captureButton.setToolTipText("Take screenshot");
 		
+		
+		captureButton.setMnemonic(KeyEvent.VK_C);
+		
 		/*PromptSupport.setPrompt("Folder Path", folder);
 		PromptSupport.setPrompt("Scenario Name", text);*/
 		
@@ -150,15 +155,12 @@ public class Execute {
 		frame.pack();
 		try
 		{
-			ImageIcon icon = new ImageIcon("\\lib\\record-icon.png");
-			System.out.println("Icon Load Status : "+icon.getImageLoadStatus());
-			frame.setIconImage(icon.getImage());
-			//frame.setIconImage(ImageIO.read(new File("/lib/record-icon.png")));
-			//getClass().getClassLoader().getResourceAsStream("\\icon.png");
+			frame.setIconImage(ImageIO.read(new File(System.getProperty("user.dir")+"/lib/record-icon.png")));
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error in reading icon image:"+e.getMessage());
+			System.out.println("Error in reading icon image : "+e.getMessage());
+			System.out.println(e);
 		}
 		frame.setVisible(true);
 		
