@@ -12,6 +12,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
@@ -30,6 +31,7 @@ import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -40,6 +42,11 @@ public class Execute {
 	static String defaultFolder = System.getProperty("user.dir");
 	static int count = 0;
 	
+	/**
+	 * Captures screenshot within the maximum available window bounds.
+	 * @param testScenario The name of the file to be saved. This will be formated with timestamp to form a unique name.
+	 * @param filePath The path where the file has to be saved.
+	 */
 	public static void capture(String testScenario, String filePath){
 		
 		String path = filePath; 
@@ -82,7 +89,11 @@ public class Execute {
 		}
 
 	}
-	
+	/**
+	 * Opens file chooser which have only directories displayed 
+	 * @param currentPath the path which is already being used. This will be opened by default
+	 * @return Selected path if successful. null if selection was errored out.  
+	 */
 	public static String selectFolder(String currentPath)
 	{
 		String folderSelected = null;
@@ -140,7 +151,6 @@ public class Execute {
 		scenarioName.setToolTipText("Enter scenario name");
 		captureButton.setToolTipText("Take screenshot");
 		
-		
 		captureButton.setMnemonic(KeyEvent.VK_C);
 		
 		/*PromptSupport.setPrompt("Folder Path", folder);
@@ -155,6 +165,8 @@ public class Execute {
 		frame.pack();
 		try
 		{
+			//ImageIcon icon = new ImageIcon(Execute.class.getResource("/lib/record-icon.png"));
+			//frame.setIconImage(icon.getImage());
 			frame.setIconImage(ImageIO.read(new File(System.getProperty("user.dir")+"/lib/record-icon.png")));
 		}
 		catch(Exception e)
@@ -241,5 +253,13 @@ public class Execute {
 				}
 			}
 		});
+		
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+		    public void windowClosing(java.awt.event.WindowEvent e) 
+			{
+		        System.out.println(count+" screenshots captured");
+			}
+			});
 	}
 }
